@@ -1,5 +1,5 @@
 {
-  "name": "fastly-recycling-api",
+  "name": "fastly-recycling-server",
   "version": "1.0.0",
   "description": "A Fastly edge computing API for email/password signup & login using Drizzle ORM and Neon PostgreSQL.",
   "author": "Jackson Kasi",
