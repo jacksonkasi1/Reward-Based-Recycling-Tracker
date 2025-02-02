@@ -10,7 +10,7 @@ export const tbl_user_fingerprint_logs = pgTable("tbl_user_fingerprint_logs", {
   device_info: text("device_info").notNull(),
   ip_address: text("ip_address").notNull(),
   submission_count: integer("submission_count").notNull().default(0),
-  last_submission_at: timestamp("last_submission_at", { mode: "string" }).notNull(),
+  last_submission_at: timestamp("last_submission_at").notNull(),
   flagged: boolean("flagged").notNull().default(false),
 });
 

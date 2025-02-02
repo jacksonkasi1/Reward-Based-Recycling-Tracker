@@ -13,12 +13,12 @@ export const tbl_recycling_logs = pgTable("tbl_recycling_logs", {
   quantity: integer("quantity").default(6),
   // Likewise, image_hash_id is defined as uuid.
   image_hash_id: uuid("image_hash_id").notNull().references(() => tbl_image_hashes.id, { onDelete: "cascade" }),
-  exif_timestamp: timestamp("exif_timestamp", { mode: "string" }).notNull(),
+  exif_timestamp: timestamp("exif_timestamp").notNull(),
   exif_gps_location: text("exif_gps_location").notNull(),
   status: text("status")
     .notNull()
     .default("Pending"),
-  created_at: timestamp("created_at", { mode: "string" }).notNull(),
+  created_at: timestamp("created_at").notNull(),
 });
 
 export const tblRecyclingLogsRelations = relations(tbl_recycling_logs, ({ one }) => ({
