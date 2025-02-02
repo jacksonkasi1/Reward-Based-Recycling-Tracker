@@ -1,27 +1,27 @@
 {
-  "name": "fastly-recycling-server",
+  "name": "recycling-server",
   "version": "1.0.0",
-  "description": "A Fastly edge computing API for email/password signup & login using Drizzle ORM and Neon PostgreSQL.",
+  "description": "A edge computing API for email/password signup & login using Drizzle ORM and Neon PostgreSQL.",
   "author": "Jackson Kasi",
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node-dev src/index.ts",
+    "dev": "ts-node-dev --esm  src/index.ts",
     "db:push": "drizzle-kit push",
     "db:migrate": "drizzle-kit migrate",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
-    "@fastly/expressly": "^2.3.0",
     "@neondatabase/serverless": "^0.10.4",
     "@t3-oss/env-core": "^0.12.0",
     "@types/body-parser": "^1.19.5",
-    "bcrypt": "^5.1.1",
+    "better-auth": "^1.1.15",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.1",
-    "jsonwebtoken": "^9.0.2",
+    "hono": "^4.6.20",
     "pg": "^8.13.1",
     "zod": "^3.24.1"
   },
