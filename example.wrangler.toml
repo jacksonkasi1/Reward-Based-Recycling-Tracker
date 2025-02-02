@@ -1,0 +1,47 @@
+#:schema node_modules/wrangler/config-schema.json
+
+name = "recycling-server"
+main = "src/index.ts"
+compatibility_date = "2025-01-08"
+compatibility_flags = [ "nodejs_compat" ]
+
+[placement]
+mode = "smart"
+
+# -----------------------------------------------------------------
+# Production Environment
+#  - Uses a custom domain (route)
+#  - Disables workers_dev subdomain
+#  - Sets production environment variables
+# -----------------------------------------------------------------
+[env.production]
+workers_dev = false
+route = "https://xxxxxxxxxxx.com/*"
+
+# ----- Global Variables (apply to all environments) -----
+[vars]
+NODE_VERSION = "20.0.0"
+NODE_ENV = "production"
+BETTER_AUTH_URL = "https://xxxxxx.better.dev"
+BETTER_AUTH_SECRET = "your-secret-key"
+GOOGLE_CLIENT_ID = "your-google-client-id"
+GOOGLE_CLIENT_SECRET = "your-google-client-secret"
+DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
+
+
+# -----------------------------------------------------------------
+# Development Environment
+#  - Uses *.workers.dev subdomain (workers_dev = true)
+#  - Sets dev environment variables
+# -----------------------------------------------------------------
+[env.development]
+workers_dev = true
+
+[env.development.vars]
+NODE_VERSION = "20.0.0"
+NODE_ENV = "development"
+BETTER_AUTH_URL = "http://localhost:8787"
+BETTER_AUTH_SECRET = "your-secret-key"
+GOOGLE_CLIENT_ID = "your-google-client-id"
+GOOGLE_CLIENT_SECRET = "your-google-client-secret"
+DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
