@@ -1,30 +1,44 @@
-// ===================== Imports =====================
+import { Hono } from "hono";
+import { cors } from "hono/cors";
 
-// Third-party libraries
-import express from '@fastly/expressly';
-import bodyParser from 'body-parser';
+// Import routes
+import routes  from "@/routes";
 
-// Project modules
-import authRoutes from './routes/authRoutes';
+// Import auth functions
+import { configureAuth } from "@/lib/auth";
 
-// ===================== App Initialization =====================
+// Import middleware
+import { sessionMiddleware } from "@/middleware/user-auth";
 
-const app = express();
+// Import types
+import { Env } from "@/types/common";
 
-/**
- * Middleware to parse JSON requests.
- */
-app.use(bodyParser.json());
+const app = new Hono();
 
-/**
- * Authentication routes.
- */
-app.use('/api/auth', authRoutes);
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:8787",
+      "*", // Allow all origins (not recommended for production)
+    ],
+    maxAge: 600,
+    credentials: true,
+  }),
+);
 
-/**
- * Start the server.
- */
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.on(["POST", "GET"], "/api/auth/**", async (c) => {
+  const auth = configureAuth(c.env as Env);
+  const response = await auth.handler(c.req.raw);
+  // Example: You can handle response customization here if needed
+  return response;
 });
+
+// Add session middleware
+app.use("/api/*", sessionMiddleware);
+app.route("/api", routes);
+
+
+app.get("/", (c) => c.text("Server is running."));
+
+export default app;
