@@ -1,3 +1,4 @@
 # Reward-Based Recycling Tracker
 
-server link: <https://recycling-server.contentguru.workers.dev/>
+- **Server Link:** <https://recycling-server.contentguru.workers.dev/>
+- **API Dog:** <https://j44cgdu55d.apidog.io/>
