@@ -15,7 +15,6 @@ import { hashPassword } from "@/utils/auth";
 // Import types
 import { Env } from "@/types/common";
 
-
 const signupRoute = new Hono<{ Bindings: Env }>();
 
 signupRoute.post("/", async (c) => {
@@ -27,7 +26,10 @@ signupRoute.post("/", async (c) => {
 
   const db = getDb(c.env.DATABASE_URL);
   // Check if a user with the same email already exists.
-  const existing = await db.select().from(tbl_users).where(eq(tbl_users.email, email));
+  const existing = await db
+    .select()
+    .from(tbl_users)
+    .where(eq(tbl_users.email, email));
   if (existing.length > 0) {
     return c.json({ error: "User already exists" }, 400);
   }
@@ -42,8 +44,9 @@ signupRoute.post("/", async (c) => {
     updated_at: new Date(),
   };
 
-  const inserted = await db.insert(tbl_users).values(newUser).returning();
-  return c.json({ message: "User created", user: inserted[0] }, 201);
+  await db.insert(tbl_users).values(newUser).returning();
+  
+  return c.json({ message: "User created" }, 201);
 });
 
 export default signupRoute;

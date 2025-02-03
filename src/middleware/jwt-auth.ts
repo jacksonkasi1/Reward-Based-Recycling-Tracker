@@ -16,6 +16,7 @@ type ContextWithUser = Context<{ Bindings: Env; Variables: { user: JWTPayload } 
  */
 export async function authMiddleware(c: ContextWithUser, next: Next) {
   const authHeader = c.req.header("Authorization");
+
   if (!authHeader) {
     return c.json({ error: "Authorization header missing" }, 401);
   }
