@@ -1,16 +1,15 @@
+// src/routes/auth/index.ts
+
 import { Hono } from "hono";
-import { getDb } from "@/db"; // Adjust the path as needed
 
-// Import types
-import { Env } from "@/types/common";
+// Import routes
+import signupRoute from "./signup";
+import loginRoute from "./login";
 
-const route = new Hono<{ Bindings: Env }>();
+const authRoute = new Hono();
 
-route.get("/", (c) => {
-  // c.env now includes DATABASE_URL, so this works as expected.
-  const db = getDb(c.env!.DATABASE_URL);
-  // You can now use `db` for your queries.
-  return c.text("Database initialized.");
-});
+// Route endpoints under their respective paths.
+authRoute.route("/signup", signupRoute);
+authRoute.route("/login", loginRoute);
 
-export default route;
+export default authRoute;

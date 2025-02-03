@@ -2,13 +2,13 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 
 // Import routes
-import routes  from "@/routes";
+import { routes } from "@/routes";
 
 // Import auth functions
 import { configureAuth } from "@/lib/auth";
 
 // Import middleware
-import { sessionMiddleware } from "@/middleware/user-auth";
+import { sessionMiddleware } from "@/middleware/better-auth";
 
 // Import types
 import { Env } from "@/types/common";
@@ -37,7 +37,6 @@ app.on(["POST", "GET"], "/api/auth/**", async (c) => {
 // Add session middleware
 app.use("/api/*", sessionMiddleware);
 app.route("/api", routes);
-
 
 app.get("/", (c) => c.text("Server is running."));
 
