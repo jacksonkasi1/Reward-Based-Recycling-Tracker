@@ -8,6 +8,13 @@
       "when": 1738508862501,
       "tag": "0000_petite_klaw",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1738605701450,
+      "tag": "0001_shiny_goblin_queen",
+      "breakpoints": true
     }
   ]
 }
