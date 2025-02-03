@@ -1,11 +1,10 @@
 // src/routes/index.ts
 
 import { Hono } from "hono";
+import userRoute from "./user";
 
-// Import routes
-import authApi from "@/routes/auth";
 
 export const routes = new Hono();
 
 // Mount routes
-routes.route("/auth-v2", authApi);
+routes.route("/user", userRoute);

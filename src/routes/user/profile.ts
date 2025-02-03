@@ -15,7 +15,7 @@ import type { JWTPayload } from "@/types/auth";
 
 const protectedRoute = new Hono();
 
-protectedRoute.get("/profile", authMiddleware, async (c) => {
+protectedRoute.get("/", authMiddleware, async (c) => {
   const user = c.get("user") as JWTPayload;
 
   const db = getDb(c.env.DATABASE_URL);
