@@ -21,7 +21,15 @@ protectedRoute.get("/", authMiddleware, async (c) => {
   const db = getDb(c.env.DATABASE_URL);
 
   const users = await db
-    .select()
+    .select({
+      id: tbl_users.id,
+      name: tbl_users.name,
+      email: tbl_users.email,
+      image: tbl_users.image,
+      points: tbl_users.points,
+      created_at: tbl_users.created_at,
+      updated_at: tbl_users.updated_at,
+    })
     .from(tbl_users)
     .where(eq(tbl_users.id, user.sub));
 
