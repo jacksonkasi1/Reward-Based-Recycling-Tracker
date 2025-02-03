@@ -9,37 +9,37 @@ const encoder = new TextEncoder();
  * Returns a string in the format: salt:hash
  */
 export async function hashPassword(password: string, salt?: Uint8Array): Promise<string> {
-  if (!salt) {
-    salt = crypto.getRandomValues(new Uint8Array(16)); // Generate a 16-byte salt
+    if (!salt) {
+      salt = crypto.getRandomValues(new Uint8Array(16)); // Generate a 16-byte salt
+    }
+    // Import the password as a key.
+    const keyMaterial = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(password),
+      "PBKDF2",
+      false,
+      ["deriveBits"]
+    );
+    
+    const derivedBits = await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        salt: salt.buffer as ArrayBuffer,
+        iterations: 100000,
+        hash: "SHA-256",
+      },
+      keyMaterial,
+      256
+    );
+    const hashArray = new Uint8Array(derivedBits);
+    const hashHex = Array.from(hashArray)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    const saltHex = Array.from(salt)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    return `${saltHex}:${hashHex}`;
   }
-  // Import the password as a key.
-  const keyMaterial = await crypto.subtle.importKey(
-    "raw",
-    encoder.encode(password),
-    "PBKDF2",
-    false,
-    ["deriveBits"]
-  );
-  // Derive 256 bits (32 bytes) using 100,000 iterations.
-  const derivedBits = await crypto.subtle.deriveBits(
-    {
-      name: "PBKDF2",
-      salt,
-      iterations: 100000,
-      hash: "SHA-256",
-    },
-    keyMaterial,
-    256
-  );
-  const hashArray = new Uint8Array(derivedBits);
-  const hashHex = Array.from(hashArray)
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-  const saltHex = Array.from(salt)
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-  return `${saltHex}:${hashHex}`;
-}
 
 /**
  * Verifies a password against the stored hash.

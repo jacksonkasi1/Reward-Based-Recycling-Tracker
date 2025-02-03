@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 
 // Import db
-import { db } from "@/db";
+import { getDb } from "@/db";
 import * as schema from "@/db/schema";
 
 // Import types
@@ -10,10 +10,13 @@ import { Env } from "@/types/common";
 
 export function configureAuth(env: Env) {
   const providers = ["google"];
+  const db = getDb(env.DATABASE_URL);
 
   const configuredProviders = providers.reduce<
     Record<string, { clientId: string; clientSecret: string }>
   >((acc, provider) => {
+
+
     const id = env[`${provider.toUpperCase()}_CLIENT_ID`];
     const secret = env[`${provider.toUpperCase()}_CLIENT_SECRET`];
 
