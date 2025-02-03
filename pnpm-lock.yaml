@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fingerprintjs/fingerprintjs-pro-server-api':
+        specifier: ^6.1.0
+        version: 6.1.0
       '@neondatabase/serverless':
         specifier: ^0.10.4
         version: 0.10.4
@@ -548,6 +551,10 @@ packages:
   '@fastify/busboy@2.1.1':
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
+
+  '@fingerprintjs/fingerprintjs-pro-server-api@6.1.0':
+    resolution: {integrity: sha512-XduKIYYrVU8yynw4ByZa2E7sPavwG0UxNOsknq55Q7TSg+oAO2P0cTIx9vXu44U7r2IX/s5+Ks7oG+FzoJqUXQ==}
+    engines: {node: '>=18.17.0'}
 
   '@hexagon/base64@1.1.28':
     resolution: {integrity: sha512-lhqDEAvWixy3bZ+UOYbPwUbBkwBq5C1LAJ/xPC8Oi+lL54oyakv/npbA0aU2hgCsx/1NUd4IBvV03+aUBWxerw==}
@@ -1718,6 +1725,8 @@ snapshots:
     optional: true
 
   '@fastify/busboy@2.1.1': {}
+
+  '@fingerprintjs/fingerprintjs-pro-server-api@6.1.0': {}
 
   '@hexagon/base64@1.1.28': {}
 
