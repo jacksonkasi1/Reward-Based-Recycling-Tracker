@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1738508862501,
-      "tag": "0000_petite_klaw",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1738605701450,
-      "tag": "0001_shiny_goblin_queen",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1738605832121,
-      "tag": "0002_powerful_skin",
+      "when": 1738606419720,
+      "tag": "0000_closed_iron_patriot",
       "breakpoints": true
     }
   ]

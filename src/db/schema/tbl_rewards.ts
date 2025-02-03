@@ -1,8 +1,8 @@
-import { pgTable, uuid, text, integer, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, timestamp } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const tbl_rewards = pgTable("tbl_rewards", {
-  id: uuid("id").notNull().primaryKey().$default(() => sql`gen_random_uuid()`),
+  id: text("id").notNull().primaryKey().$default(() => sql`gen_random_uuid()`),
   name: text("name").notNull(),
   description: text("description").notNull(),
   points_required: integer("points_required").notNull(),

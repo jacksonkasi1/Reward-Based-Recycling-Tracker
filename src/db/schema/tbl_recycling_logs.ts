@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, integer, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, timestamp } from "drizzle-orm/pg-core";
 import { sql, relations } from "drizzle-orm";
 
 // ** import table
@@ -6,13 +6,11 @@ import { tbl_users } from "./tbl_users";
 import { tbl_image_hashes } from "./tbl_image_hashes";
 
 export const tbl_recycling_logs = pgTable("tbl_recycling_logs", {
-  id: uuid("id").notNull().primaryKey().$default(() => sql`gen_random_uuid()`),
-  // Using uuid type for consistency since tbl_users.id is UUID.
-  user_id: uuid("user_id").notNull().references(() => tbl_users.id, { onDelete: "cascade" }),
+  id: text("id").notNull().primaryKey().$default(() => sql`gen_random_uuid()`),
+  user_id: text("user_id").notNull().references(() => tbl_users.id, { onDelete: "cascade" }),
   item_type: text("item_type").notNull(),
   quantity: integer("quantity").default(6),
-  // Likewise, image_hash_id is defined as uuid.
-  image_hash_id: uuid("image_hash_id").notNull().references(() => tbl_image_hashes.id, { onDelete: "cascade" }),
+  image_hash_id: text("image_hash_id").notNull().references(() => tbl_image_hashes.id, { onDelete: "cascade" }),
   exif_timestamp: timestamp("exif_timestamp").notNull(),
   exif_gps_location: text("exif_gps_location").notNull(),
   status: text("status")
