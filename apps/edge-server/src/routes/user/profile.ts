@@ -4,8 +4,8 @@ import { Hono } from "hono";
 import { eq } from "drizzle-orm";
 
 // Import db/schema
-import { getDb } from "@/db";
-import { tbl_users } from "@/db/schema/tbl_users";
+import { getDb } from "@repo/db";
+import { tbl_users } from "@repo/db";
 
 // Import middleware
 import { authMiddleware } from "@/middleware/jwt-auth";

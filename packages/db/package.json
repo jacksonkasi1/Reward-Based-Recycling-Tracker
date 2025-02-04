@@ -15,17 +15,11 @@
   "author": "Jackson Kasi",
   "license": "ISC",
   "dependencies": {
-    "@neondatabase/serverless": "^0.9.0",
-    "@t3-oss/env-core": "^0.8.0",
+    "@neondatabase/serverless": "^0.10.4",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.30.8",
-    "drizzle-zod": "^0.5.1",
-    "pg": "^8.11.5",
-    "postgres": "^3.4.4",
-    "zod": "^3.22.4"
+    "drizzle-orm": "^0.39.1"
   },
   "devDependencies": {
-    "@types/pg": "^8.11.5",
-    "drizzle-kit": "^0.20.17"
+    "drizzle-kit": "^0.30.4"
   }
 }
