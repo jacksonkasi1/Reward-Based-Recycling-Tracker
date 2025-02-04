@@ -2,8 +2,8 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 
 // Import db
-import { getDb } from "@/db";
-import * as schema from "@/db/schema";
+import { getDb } from "@repo/db";
+import * as schema from "@repo/db/src/schema";
 
 // Import types
 import { Env } from "@/types/common";
