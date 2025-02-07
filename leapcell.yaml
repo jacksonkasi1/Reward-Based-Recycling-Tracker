@@ -1,0 +1,5 @@
+runtime: javascript
+startCommand: turbo run start --filter=async-task
+buildCommand: npm install pnpm turbo --global  &&  pnpm install --no-frozen-lockfile && turbo run build --filter={apps/async-task}...
+port: 5000
+memory: 1024
