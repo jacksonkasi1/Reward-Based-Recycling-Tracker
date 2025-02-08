@@ -4,6 +4,8 @@ import { Storage } from "@google-cloud/storage";
 // Import config
 import { env } from "@/config/env";
 
+console.log({env});
+
 const storage = new Storage({
   projectId: env.GCLOUD_PROJECT_ID,
   credentials: env.GCLOUD_SERVICE_ACCOUNT_KEY
