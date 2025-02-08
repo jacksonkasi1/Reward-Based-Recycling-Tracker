@@ -27,4 +27,5 @@ lerna-debug.log*
 # misc
 .DS_Store
 
+# // Google Cloud Storage keys
 gcs-keys.json
