@@ -19,8 +19,19 @@ route.get("/upload-image", async (c) => {
 
   try {
     // Generate a signed URL valid for 1 hour (3600 seconds)
-    const signedUrl = await generateUploadSignedUrl(fileName, 3600, contentType);
-    return c.json({ signedUrl });
+    const signedUrlData = await generateUploadSignedUrl(
+      fileName,
+      3600,
+      contentType,
+    );
+
+    return c.json({
+      message: "Signed URL generated successfully",
+      data: {
+        signedUrl: signedUrlData.signedUrl,
+        publicUrl: signedUrlData.publicUrl,
+      },
+    });
   } catch (error) {
     console.error("Error generating signed URL:", error);
     return c.json({ error: "Failed to generate signed URL" }, 500);
