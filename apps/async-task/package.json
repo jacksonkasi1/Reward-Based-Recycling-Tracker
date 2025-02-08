@@ -6,13 +6,17 @@
     "start": "tsx src/index.ts"
   },
   "dependencies": {
+    "@google-cloud/storage": "^7.15.0",
     "@hono/node-server": "^1.13.8",
-    "hono": "^4.6.20",
     "@repo/db": "workspace:^",
-    "@repo/jwt": "workspace:^"
+    "@repo/jwt": "workspace:^",
+    "dotenv": "^16.4.5",
+    "hono": "^4.6.20",
+    "short-uuid": "^5.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
-    "tsx": "^4.7.1"
+    "tsx": "^4.7.1",
+    "typescript": "^5.7.3"
   }
 }
