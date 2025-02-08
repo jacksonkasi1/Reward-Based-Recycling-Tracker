@@ -1,10 +1,24 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import { cors} from 'hono/cors'
+
+// Import config
+import { env } from "@/config/env";
 
 // Import routes
 import { routes } from "@/routes";
 
 const app = new Hono()
+
+app.use(cors({
+  origin: [
+    env.FRONTEND_URL,
+    env.EDGE_SERVER_URL,
+    "*", // Allow all origins (not recommended for production)
+  ],
+  maxAge: 600,
+  credentials: true,
+}))
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')
