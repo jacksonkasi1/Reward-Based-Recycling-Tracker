@@ -7,7 +7,7 @@ import { generateUploadSignedUrl } from "@/utils/gcs";
 
 const route = new Hono();
 
-route.get("/upload-image", async (c) => {
+route.get("/", async (c) => {
   // Expect the client to pass a 'filename' query parameter.
   const fileName = c.req.query("filename");
   // Optionally, the client may specify a content type; default to 'image/jpeg'
