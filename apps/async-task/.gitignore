@@ -29,3 +29,4 @@ lerna-debug.log*
 
 # // Google Cloud Storage keys
 gcs-keys.json
+setup_gcs_bucket.sh
