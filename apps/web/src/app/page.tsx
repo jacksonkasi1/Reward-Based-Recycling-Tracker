@@ -1,11 +1,19 @@
 "use client";
 
 import { useState } from "react";
-
 import axios from "axios";
 
-// Import environment variables
-import { env } from "@/config/env";
+// Ensure you have the correct API base URL configured in your environment
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
+
+// TypeScript interface for API response
+interface SignedUrlResponse {
+  message: string;
+  data: {
+    signedUrl: string;
+    publicUrl: string;
+  };
+}
 
 export default function SignedUrlUploader() {
   const [file, setFile] = useState<File | null>(null);
@@ -22,17 +30,22 @@ export default function SignedUrlUploader() {
 
   // Upload file to Google Cloud Storage via signed URL
   const uploadFile = async () => {
-    if (!file) return alert("Please select a file first.");
+    if (!file) {
+      alert("Please select a file first.");
+      return;
+    }
     setLoading(true);
     setError(null);
 
     try {
       // 1️⃣ Request a signed URL from your backend
-      const response = await axios.get(`${env.NEXT_PUBLIC_API_URL}/api/get-signed-url`, {
-        params: { filename: file.name, contentType: file.type },
-      });
+      const { data }: { data: SignedUrlResponse } = await axios.get(
+        `${API_URL}/api/upload/signed-url`,
+        { params: { filename: file.name, contentType: file.type } }
+      );
 
-      const { signedUrl, publicUrl } = response.data;
+      const { signedUrl, publicUrl } = data.data;
+
       console.log("Signed URL:", signedUrl);
       console.log("Public URL:", publicUrl);
 
@@ -41,36 +54,42 @@ export default function SignedUrlUploader() {
         headers: { "Content-Type": file.type },
       });
 
-      setUploadedUrl(publicUrl); // Save the public URL to display the uploaded image
+      // ✅ Successfully uploaded, set the public URL
+      setUploadedUrl(publicUrl);
     } catch (err: any) {
       console.error("Upload error:", err);
-      setError("Failed to upload the file.");
+      setError(err.response?.data?.error || "Failed to upload the file.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="p-4 border rounded-lg shadow-md w-full max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-2">Upload Image to GCS</h2>
+    <div className="p-6 border rounded-lg shadow-md w-full max-w-md mx-auto bg-white">
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Upload Image to GCS</h2>
 
       {/* File Input */}
-      <input type="file" onChange={handleFileChange} className="mb-3 block" />
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="mb-3 block w-full border rounded p-2 text-gray-700"
+        accept="image/*"
+      />
 
       {/* Upload Button */}
       <button
         onClick={uploadFile}
         disabled={!file || loading}
-        className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+        className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
       >
         {loading ? "Uploading..." : "Upload"}
       </button>
 
       {/* Uploaded Image Preview */}
       {uploadedUrl && (
-        <div className="mt-4">
-          <h3 className="text-lg font-medium">Uploaded Image:</h3>
-          <img src={uploadedUrl} alt="Uploaded" className="mt-2 w-full h-auto rounded" />
+        <div className="mt-4 p-3 border rounded bg-gray-100">
+          <h3 className="text-lg font-medium text-gray-800">Uploaded Image:</h3>
+          <img src={uploadedUrl} alt="Uploaded" className="mt-2 w-full h-auto rounded shadow" />
           <a
             href={uploadedUrl}
             target="_blank"
@@ -82,8 +101,18 @@ export default function SignedUrlUploader() {
         </div>
       )}
 
+      {/* Show API Response Link */}
+      {uploadedUrl && (
+        <p className="mt-2 text-sm text-gray-700">
+          🔗 Image URL:{" "}
+          <a href={uploadedUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600">
+            {uploadedUrl}
+          </a>
+        </p>
+      )}
+
       {/* Error Message */}
-      {error && <p className="text-red-500 mt-2">{error}</p>}
+      {error && <p className="text-red-500 mt-3">{error}</p>}
     </div>
   );
 }
