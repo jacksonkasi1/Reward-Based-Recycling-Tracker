@@ -1,102 +1,89 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+"use client";
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
+import { useState } from "react";
 
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
+import axios from "axios";
+
+// Import environment variables
+import { env } from "@/config/env";
+
+export default function SignedUrlUploader() {
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Handle file selection
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]);
+    }
+  };
+
+  // Upload file to Google Cloud Storage via signed URL
+  const uploadFile = async () => {
+    if (!file) return alert("Please select a file first.");
+    setLoading(true);
+    setError(null);
+
+    try {
+      // 1️⃣ Request a signed URL from your backend
+      const response = await axios.get(`${env.NEXT_PUBLIC_API_URL}/api/get-signed-url`, {
+        params: { filename: file.name, contentType: file.type },
+      });
+
+      const { signedUrl, publicUrl } = response.data;
+      console.log("Signed URL:", signedUrl);
+      console.log("Public URL:", publicUrl);
+
+      // 2️⃣ Upload the file directly to Google Cloud Storage using the signed URL
+      await axios.put(signedUrl, file, {
+        headers: { "Content-Type": file.type },
+      });
+
+      setUploadedUrl(publicUrl); // Save the public URL to display the uploaded image
+    } catch (err: any) {
+      console.error("Upload error:", err);
+      setError("Failed to upload the file.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
+    <div className="p-4 border rounded-lg shadow-md w-full max-w-md mx-auto">
+      <h2 className="text-xl font-bold mb-2">Upload Image to GCS</h2>
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+      {/* File Input */}
+      <input type="file" onChange={handleFileChange} className="mb-3 block" />
 
-        <div className={styles.ctas}>
+      {/* Upload Button */}
+      <button
+        onClick={uploadFile}
+        disabled={!file || loading}
+        className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+      >
+        {loading ? "Uploading..." : "Upload"}
+      </button>
+
+      {/* Uploaded Image Preview */}
+      {uploadedUrl && (
+        <div className="mt-4">
+          <h3 className="text-lg font-medium">Uploaded Image:</h3>
+          <img src={uploadedUrl} alt="Uploaded" className="mt-2 w-full h-auto rounded" />
           <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
+            href={uploadedUrl}
             target="_blank"
             rel="noopener noreferrer"
+            className="text-blue-500 underline block mt-2"
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://turbo.build/repo/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
+            View Image
           </a>
         </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turbo.build?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turbo.build →
-        </a>
-      </footer>
+      )}
+
+      {/* Error Message */}
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 }
