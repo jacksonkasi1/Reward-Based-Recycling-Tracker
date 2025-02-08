@@ -1,14 +1,16 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 
-// Import db/schema
-import { } from "@repo/db";
+// Import routes
+import { routes } from "@/routes";
 
 const app = new Hono()
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
+
+app.route("/api", routes);
 
 const port = 5000
 console.log(`Server is running on http://localhost:${port}`)
