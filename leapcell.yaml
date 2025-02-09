@@ -4,10 +4,10 @@ startCommand: |
   turbo run start --filter=apps/async-task
 
 # Set environment variables & install pnpm turbo & build
-buildCommand: |
-  npm install -g pnpm turbo
-  pnpm install --no-frozen-lockfile
-  source ./set-env.sh
+buildCommand:
+  npm install -g pnpm turbo &&
+  pnpm install --no-frozen-lockfile &&
+  chmod +x ./set-env.sh &&  . ./set-env.sh &&
   turbo run build --filter=apps/async-task
 
 
