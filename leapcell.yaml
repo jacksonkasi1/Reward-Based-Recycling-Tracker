@@ -1,7 +1,6 @@
 runtime: javascript
 
 startCommand: |
-  eval $(op item get "$OP_ITEM" --vault "$OP_VAULT" --format json | jq -r '.fields[] | echo export "\(.label)=\(.value)"')
   turbo run start --filter=apps/async-task
 
 buildCommand: |
