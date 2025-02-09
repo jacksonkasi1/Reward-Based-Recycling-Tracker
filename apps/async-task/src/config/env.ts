@@ -1,24 +1,16 @@
-import { execSync } from 'child_process';
+import * as dotenv from 'dotenv';
 
-// Function to get an environment variable by executing a shell command
-const getEnvVar = (variable: string): string => {
-  try {
-    return execSync(`echo $${variable}`, { encoding: 'utf-8' }).trim();
-  } catch (error) {
-    console.error(`Failed to fetch environment variable: $${variable}`, error);
-    return '';
-  }
-};
+dotenv.config();
 
-// Export env variables dynamically
 export const env = {
-  JWT_SECRET: getEnvVar('JWT_SECRET'),
-  DATABASE_URL: getEnvVar('DATABASE_URL'),
-  GCLOUD_STORAGE_BUCKET: getEnvVar('GCLOUD_STORAGE_BUCKET'),
-  GCLOUD_PROJECT_ID: getEnvVar('GCLOUD_PROJECT_ID'),
-  GCLOUD_SERVICE_ACCOUNT_KEY: getEnvVar('GCLOUD_SERVICE_ACCOUNT_KEY'),
-  FRONTEND_URL: getEnvVar('FRONTEND_URL'),
-  EDGE_SERVER_URL: getEnvVar('EDGE_SERVER_URL'),
-};
+  JWT_SECRET: process.env.JWT_SECRET!,
+  DATABASE_URL: process.env.DATABASE_URL!,
 
-console.log('Loaded Environment Variables:', env);
+  // Google Cloud Storage Configuration
+  GCLOUD_STORAGE_BUCKET: process.env.GCLOUD_STORAGE_BUCKET!,  // Name of your GCS bucket
+  GCLOUD_PROJECT_ID: process.env.GCLOUD_PROJECT_ID!,         // Google Cloud Project ID
+  GCLOUD_SERVICE_ACCOUNT_KEY: process.env.GCLOUD_SERVICE_ACCOUNT_KEY!, // Base64-encoded service account key (optional)
+
+  FRONTEND_URL: process.env.FRONTEND_URL!,
+  EDGE_SERVER_URL: process.env.EDGE_SERVER_URL!,
+};
