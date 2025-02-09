@@ -22,7 +22,6 @@ route.get("/", authMiddleware, async (c) => {
   const user = c.get("user") as JWTPayload;
 
   const db = getDb(env.DATABASE_URL);
-
   const users = await db
     .select({
       id: tbl_users.id,
