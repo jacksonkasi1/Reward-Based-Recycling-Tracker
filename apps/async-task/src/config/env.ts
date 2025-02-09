@@ -13,4 +13,6 @@ export const env = {
 
   FRONTEND_URL: process.env.FRONTEND_URL!,
   EDGE_SERVER_URL: process.env.EDGE_SERVER_URL!,
+
+  IMAGE_PROCESS_SERVER_URL: process.env.IMAGE_PROCESS_SERVER_URL!,
 };
