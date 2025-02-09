@@ -1,30 +1,33 @@
-import { execSync } from "child_process";
+import { execSync } from 'child_process';
 
-// Retrieve OP_SESSION from Leapcell environment variable
-const OP_SESSION = process.env.OP_SESSION || execSync("op signin --raw", { encoding: "utf-8" }).trim();
-
-// Vault & Item Name from Leapcell Variables
-const OP_VAULT = process.env.OP_VAULT || "DefaultVault";
-const OP_ITEM = process.env.OP_ITEM || "Project Secrets";
-
-function getSecret(key: string): string | undefined {
+// Function to fetch and parse environment variables
+const loadEnvVariables = () => {
   try {
-    return execSync(
-      `op item get "${OP_ITEM}" --vault "${OP_VAULT}" --fields ${key}`,
-      { encoding: "utf-8", env: { ...process.env, OP_SESSION } }
-    ).trim();
+    const envOutput = execSync('printenv', { encoding: 'utf-8' }); // Use 'set' for Windows
+    const envVars = envOutput.split('\n').reduce((acc, line) => {
+      const [key, value] = line.split('=');
+      if (key && value !== undefined) acc[key] = value.trim();
+      return acc;
+    }, {} as Record<string, string>);
+    return envVars;
   } catch (error) {
-    console.error(`❌ Error retrieving secret: ${key}`, error);
-    return undefined;
+    console.error('Failed to load environment variables:', error);
+    return {};
   }
-}
-
-export const env = {
-  JWT_SECRET: getSecret("JWT_SECRET")!,
-  DATABASE_URL: getSecret("DATABASE_URL")!,
-  GCLOUD_STORAGE_BUCKET: getSecret("GCLOUD_STORAGE_BUCKET")!,
-  GCLOUD_PROJECT_ID: getSecret("GCLOUD_PROJECT_ID")!,
-  GCLOUD_SERVICE_ACCOUNT_KEY: getSecret("GCLOUD_SERVICE_ACCOUNT_KEY")!,
-  FRONTEND_URL: getSecret("FRONTEND_URL")!,
-  EDGE_SERVER_URL: getSecret("EDGE_SERVER_URL")!,
 };
+
+// Load environment variables from shell
+const envVariables = loadEnvVariables();
+
+// Export env variables
+export const env = {
+  JWT_SECRET: envVariables.JWT_SECRET || '',
+  DATABASE_URL: envVariables.DATABASE_URL || '',
+  GCLOUD_STORAGE_BUCKET: envVariables.GCLOUD_STORAGE_BUCKET || '',
+  GCLOUD_PROJECT_ID: envVariables.GCLOUD_PROJECT_ID || '',
+  GCLOUD_SERVICE_ACCOUNT_KEY: envVariables.GCLOUD_SERVICE_ACCOUNT_KEY || '',
+  FRONTEND_URL: envVariables.FRONTEND_URL || '',
+  EDGE_SERVER_URL: envVariables.EDGE_SERVER_URL || '',
+};
+
+console.log('Loaded Environment Variables:', env);
