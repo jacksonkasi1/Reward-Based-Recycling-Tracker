@@ -8,7 +8,7 @@ import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 
 // Import db/schema
-import { eq, and } from "@repo/db";
+import { eq } from "@repo/db";
 import { getDb } from "@repo/db";
 import { tbl_users, tbl_image_hashes, tbl_recycling_logs, tbl_user_fingerprint_logs } from "@repo/db";
 
