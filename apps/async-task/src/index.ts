@@ -12,18 +12,17 @@ import { routes } from "@/routes";
 
 const app = new Hono()
 
-app.use(cors())
 app.use(logger())
 
-// app.use(cors({
-//   origin: [
-//     env.FRONTEND_URL,
-//     env.EDGE_SERVER_URL
-//     "*", // Allow all origins (not recommended for production)
-//   ],
-//   maxAge: 600,
-//   credentials: true,
-// }))
+app.use(cors({
+  origin: [
+    env.FRONTEND_URL,
+    env.EDGE_SERVER_URL,
+    "*", // Allow all origins (not recommended for production)
+  ],
+  maxAge: 600,
+  credentials: true,
+}))
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')
