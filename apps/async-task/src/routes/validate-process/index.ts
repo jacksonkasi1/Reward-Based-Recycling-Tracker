@@ -9,6 +9,6 @@ import processRoute from "./process";
 const route = new Hono();
 
 // Route endpoints under their respective paths.
-route.route("/profile", processRoute);
+route.route("/validate", processRoute);
 
 export default route;
