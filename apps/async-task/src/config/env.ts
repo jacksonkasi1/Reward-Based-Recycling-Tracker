@@ -1,16 +1,30 @@
-import * as dotenv from 'dotenv';
+import { execSync } from "child_process";
 
-dotenv.config();
+// Retrieve OP_SESSION from Leapcell environment variable
+const OP_SESSION = process.env.OP_SESSION || execSync("op signin --raw", { encoding: "utf-8" }).trim();
+
+// Vault & Item Name from Leapcell Variables
+const OP_VAULT = process.env.OP_VAULT || "DefaultVault";
+const OP_ITEM = process.env.OP_ITEM || "Project Secrets";
+
+function getSecret(key: string): string | undefined {
+  try {
+    return execSync(
+      `op item get "${OP_ITEM}" --vault "${OP_VAULT}" --fields ${key}`,
+      { encoding: "utf-8", env: { ...process.env, OP_SESSION } }
+    ).trim();
+  } catch (error) {
+    console.error(`❌ Error retrieving secret: ${key}`, error);
+    return undefined;
+  }
+}
 
 export const env = {
-  JWT_SECRET: process.env.JWT_SECRET!,
-  DATABASE_URL: process.env.DATABASE_URL!,
-
-  // Google Cloud Storage Configuration
-  GCLOUD_STORAGE_BUCKET: process.env.GCLOUD_STORAGE_BUCKET!,  // Name of your GCS bucket
-  GCLOUD_PROJECT_ID: process.env.GCLOUD_PROJECT_ID!,         // Google Cloud Project ID
-  GCLOUD_SERVICE_ACCOUNT_KEY: process.env.GCLOUD_SERVICE_ACCOUNT_KEY!, // Base64-encoded service account key (optional)
-
-  FRONTEND_URL: process.env.FRONTEND_URL!,
-  EDGE_SERVER_URL: process.env.EDGE_SERVER_URL!,
+  JWT_SECRET: getSecret("JWT_SECRET")!,
+  DATABASE_URL: getSecret("DATABASE_URL")!,
+  GCLOUD_STORAGE_BUCKET: getSecret("GCLOUD_STORAGE_BUCKET")!,
+  GCLOUD_PROJECT_ID: getSecret("GCLOUD_PROJECT_ID")!,
+  GCLOUD_SERVICE_ACCOUNT_KEY: getSecret("GCLOUD_SERVICE_ACCOUNT_KEY")!,
+  FRONTEND_URL: getSecret("FRONTEND_URL")!,
+  EDGE_SERVER_URL: getSecret("EDGE_SERVER_URL")!,
 };

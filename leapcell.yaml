@@ -1,5 +1,13 @@
 runtime: javascript
-startCommand: turbo run start --filter=async-task
-buildCommand: npm install pnpm turbo --global  &&  pnpm install --no-frozen-lockfile && turbo run build --filter={apps/async-task}...
+
+startCommand: |
+  eval $(op item get "$OP_ITEM" --vault "$OP_VAULT" --format json | jq -r '.fields[] | echo export "\(.label)=\(.value)"')
+  turbo run start --filter=apps/async-task
+
+buildCommand: |
+  npm install -g pnpm turbo
+  pnpm install --no-frozen-lockfile
+  turbo run build --filter=apps/async-task
+
 port: 5000
 memory: 1024
