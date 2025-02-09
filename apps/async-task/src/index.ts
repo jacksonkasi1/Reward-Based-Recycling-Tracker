@@ -2,6 +2,8 @@ import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors} from 'hono/cors'
 
+import { logger } from 'hono/logger'
+
 // Import config
 import { env } from "@/config/env";
 
@@ -11,6 +13,7 @@ import { routes } from "@/routes";
 const app = new Hono()
 
 app.use(cors())
+app.use(logger())
 
 // app.use(cors({
 //   origin: [
