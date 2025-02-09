@@ -28,6 +28,7 @@ GOOGLE_CLIENT_ID = "your-google-client-id"
 GOOGLE_CLIENT_SECRET = "your-google-client-secret"
 DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
 JWT_SECRET = "your-jwt-secret"
+BG_TASK_SERVER_URL = "https://xxxxxxxxx.leapcell-async.dev"
 
 
 # -----------------------------------------------------------------
@@ -47,3 +48,4 @@ GOOGLE_CLIENT_ID = "your-google-client-id"
 GOOGLE_CLIENT_SECRET = "your-google-client-secret"
 DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
 JWT_SECRET = "your-jwt-secret"
+BG_TASK_SERVER_URL = "https://xxxxxxxxx.leapcell-async.dev"

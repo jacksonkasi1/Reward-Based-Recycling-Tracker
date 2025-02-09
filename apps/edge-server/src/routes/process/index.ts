@@ -6,9 +6,9 @@ import { Hono } from "hono";
 import processRoute from "./process";
 
 
-const route = new Hono();
+const userRoute = new Hono();
 
 // Route endpoints under their respective paths.
-route.route("/validate", processRoute);
+userRoute.route("/verify", processRoute);
 
-export default route;
+export default userRoute;

@@ -11,5 +11,6 @@ export interface Env {
   GOOGLE_CLIENT_SECRET?: string;
   DATABASE_URL: string;
   JWT_SECRET: string;
+  BG_TASK_SERVER_URL: string;
   [key: string]: string | undefined;
 }

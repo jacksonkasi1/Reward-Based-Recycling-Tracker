@@ -1,7 +1,10 @@
 // src/routes/index.ts
 
 import { Hono } from "hono";
+
+// Import routes
 import userRoute from "./user";
+import processRoute from "./process";
 
 
 export const routes = new Hono();
@@ -11,3 +14,4 @@ export const routes = new Hono();
 routes.get("/", (c) => c.text("API v1"));
 
 routes.route("/user", userRoute);
+routes.route("/process", processRoute);
