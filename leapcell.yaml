@@ -1,7 +1,7 @@
 runtime: javascript
 
 startCommand:
-  turbo run start --filter=apps/async-task
+  turbo run start --filter=async-task
 
 # Set environment variables & install pnpm turbo & build
 buildCommand:
